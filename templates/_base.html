@@ -1,0 +1,107 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block title %}
+
+    {% endblock %}
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>ShoppingYar</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'img/icon.png' %}">
+
+    <!-- ************************* CSS Files ************************* -->
+
+    <link rel="stylesheet" href="{% static 'css/_base.css' %}">
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="{% static 'css/vendor.css' %}">
+
+    <!-- style css -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+{% include 'header.html'  %}
+
+</head>
+<body dir='rtl'>
+
+{% if messages %}
+    <div class="container">
+        {% for message in messages %}
+            <div  class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+    </div>
+{% endif %}
+
+{% block content %}
+
+{% endblock %}
+
+
+
+<!-- Mini Cart Start -->
+<aside class="mini-cart" id="miniCart">
+    <div class="mini-cart-wrapper">
+        <a href="" class="btn-close"><i class="flaticon flaticon-cross"></i></a>
+        <div class="mini-cart-inner">
+            <h3 class="mini-cart__heading mb--40 mb-lg--30 text-right">سبد خرید</h3>
+            <div class="mini-cart__content">
+                {% for item in cart %}
+                    <ul class="mini-cart__list text-right">
+                        <li class="mini-cart__product d-flex justify-content-between">
+                            <div class="mini-cart__product__image">
+                                <a href="{{ item.product_obj.get_absolute_url }}">
+                                    <img src={{ item.product_obj.image.url }}>
+                                </a>
+                            </div>
+                            <div class="mini-cart__product__content pt-2">
+                                        <span class="mini-cart__product__title d-flex flex-row justify-content-between">
+                                            <a href="{{ item.product_obj.get_absolute_url }}"> {{ item.product_obj.title|truncatewords:4 }} </a>
+                                            <a href="{% url 'cart:cart_delete' item.product_obj.id %}" class="">
+                                                &#10060;
+                                            </a>
+                                        </span>
+                                <span class="mini-cart__product__quantity">
+                                            <span>{{ item.product_obj.price}}</span> &#215; <span>{{ item.quantity }}</span>    <span style="padding-right:15px;">{% widthratio item.quantity 1 item.product_obj.price %} تومان </span>
+                                        </span>
+                            </div>
+                        </li>
+                    </ul>
+                {% endfor %}
+
+                <div class="mini-cart__total">
+                    <span>جمع کل</span>
+                    <span class="ammount">{{ cart.get_total_price }} تومان</span>
+                </div>
+                <div class="mini-cart__buttons">
+                    <a href="{% url 'cart:cart_detail' %}" class="btn btn-fullwidth btn-bg-sand mb--20">مشاهده سبد خرید</a>
+                    <a href="checkout.html" class="btn btn-fullwidth btn-bg-sand">پرداخت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
+<!-- Mini Cart End -->
+
+<!-- Footer Start-->
+{% include 'Footer.html' %}
+<!-- Footer End-->
+
+<!-- jQuery JS -->
+<script src="{% static 'js/vendor.js' %}"></script>
+
+<!-- Main JS -->
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>
